@@ -22,6 +22,14 @@ h1 {
     margin-bottom: 10px;
 }
 
+.btn.btn-secondary.selected {
+    background-color: blue;
+}
+
+.btn.btn-secondary.notselected {
+    background-color: brown
+}
+
 .list-group {
     margin-left: 50px;
     width: 75%;
