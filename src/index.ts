@@ -29,8 +29,9 @@ if (savedPercentage) {
 let tp = 0;
 
 function ShouldRunCalculate(): boolean {
+    // if a button is selected and there is anything in bill amount
     const btn = allButtons.filter(btn => btn.disabled === true);
-    return btn !== undefined;
+    return btn !== undefined && inputBillAmount.value.length > 0;
 }
 function calculateAndUpdate() {
     if (ShouldRunCalculate()) {
@@ -77,9 +78,8 @@ function setBillAmount() {
 
 function setTipAmount() {
     const tip = (tp * Number.parseFloat(inputBillAmount.value)) / 100;
-    displayAmountOfTip.innerText = `Amount of tip: ${tip.toString()}`;
+    displayAmountOfTip.innerText = `Amount of tip: ${tip.toFixed(2)}`;
 }
-
 
 function setTotalAmount() {
     const bill: number = Number.parseFloat(inputBillAmount.value);
@@ -87,7 +87,7 @@ function setTotalAmount() {
     const total = bill + tip / 100;
 
     if (inputBillAmount.value.length > 0) {
-        displayTotal.innerText = `Total To Be Paid: $${total} `;
+        displayTotal.innerText = `Total To Be Paid: $${total.toFixed(2)} `;
     }
 }
 
