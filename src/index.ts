@@ -14,6 +14,29 @@ const button20 = document.getElementById('twenty') as HTMLButtonElement;
 const buttonCustom = document.getElementById('custom') as HTMLButtonElement;
 const buttonGroup = document.getElementsByClassName('.btn-group') as unknown as HTMLDivElement;
 
+const invalidChars = [
+    '-',
+    '+',
+    'e',
+];
+const invalidCharsE = [
+    'e'
+];
+inputBillAmount.addEventListener('keydown', (e) => {
+    if (invalidChars.includes(e.key)) {
+        e.preventDefault();
+    }
+});
+
+customTipAmount.addEventListener('keydown', function (e) {
+    const that = this as HTMLInputElement;
+
+    if (e.key === 'Backspace') { return; }
+    if (invalidChars.includes(e.key) || that.value.length >= 2) {
+        e.preventDefault();
+    }
+});
+
 const allButtons = [button10, button15, button20, buttonCustom];
 let tp = 0;
 let customTp = 0;
@@ -25,15 +48,23 @@ customTipAmount.addEventListener('keyup', updateCustomButtonText);
 
 function updateCustomButtonText() {
     customTp = Number.parseInt(customTipAmount.value);
-    buttonCustom.innerText = `${customTp}%`;
+    buttonCustom.innerText = customTp ? `${customTp}%` : 'Custom';
+    localStorage.setItem('savedCustomTipPercentage', customTp.toString());
     if (buttonCustom.disabled === true) {
+        tp = customTp ? customTp : 0;
+        setTipPercentage();
         calculateAndUpdate();
     }
 }
 
 
 const savedPercentage = localStorage.getItem('savedTipPercentage');
+const savedCustomPercentage = localStorage.getItem('savedCustomTipPercentage');
 if (savedPercentage) {
+    if (savedCustomPercentage) {
+        customTp = Number.parseInt(savedPercentage);
+        buttonCustom.innerText = `${customTp}%`;
+    }
     switch (savedPercentage) {
         case '10':
             tp = 10;
@@ -51,9 +82,10 @@ if (savedPercentage) {
             setTipPercentage();
             break;
         default:
-            customTp = Number.parseInt(savedPercentage);
+            // customTp = Number.parseInt(savedPercentage);
             tp = customTp;
             buttonCustom.disabled = true;
+            customTipAmount.value = tp.toString();
             setTipPercentage();
     }
 } else {
@@ -66,7 +98,9 @@ if (savedPercentage) {
 function ShouldRunCalculate(): boolean {
     // if a button is selected and there is anything in bill amount
     const btn = allButtons.filter(btn => btn.disabled === true);
-    return btn !== undefined && inputBillAmount.value.length > 0;
+    return btn !== undefined &&
+        inputBillAmount.value.length > 0 &&
+        parseFloat(inputBillAmount.value) > 0;
 }
 function calculateAndUpdate() {
     if (ShouldRunCalculate()) {
@@ -93,7 +127,8 @@ function checkButtons() {
             setTipPercentage();
             break;
         case buttonCustom:
-            tp = customTp;
+
+            tp = customTp ? customTp : 0;
             setTipPercentage();
             break;
     }
@@ -109,8 +144,15 @@ function setTipPercentage() {
 
 function setBillAmount() {
     if (inputBillAmount.value.length > 0) {
-        displayBillAmount.innerText = `Bill Amount: $${inputBillAmount.value} `;
-        calculateAndUpdate();
+
+        if (parseFloat(inputBillAmount.value) < 0) {
+            const that = this as HTMLInputElement;
+            that.classList.add('inTheRed');
+            resetAll();
+        } else {
+            displayBillAmount.innerText = `Bill Amount: $${inputBillAmount.value} `;
+            calculateAndUpdate();
+        }
     } else {
         resetAll();
     }

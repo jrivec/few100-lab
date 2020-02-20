@@ -3,6 +3,11 @@ h1 {
     margin-left: 30px;
 }
 
+.inTheRed
+{
+    outline-color: red;
+}
+
 .input-group{
     margin-left: 30px;
     margin-top: 10px;
