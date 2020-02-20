@@ -5,7 +5,8 @@ h1 {
 
 .inTheRed
 {
-    outline-color: red;
+    border-color: red;
+    border-width: 10px;
 }
 
 .input-group{

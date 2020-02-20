@@ -23,7 +23,7 @@ const invalidCharsE = [
     'e'
 ];
 inputBillAmount.addEventListener('keydown', (e) => {
-    if (invalidChars.includes(e.key)) {
+    if (invalidCharsE.includes(e.key)) {
         e.preventDefault();
     }
 });
@@ -61,8 +61,9 @@ function updateCustomButtonText() {
 const savedPercentage = localStorage.getItem('savedTipPercentage');
 const savedCustomPercentage = localStorage.getItem('savedCustomTipPercentage');
 if (savedPercentage) {
-    if (savedCustomPercentage) {
-        customTp = Number.parseInt(savedPercentage);
+    if (savedCustomPercentage !== 'NaN') {
+        customTp = Number.parseInt(savedCustomPercentage);
+        customTipAmount.value = `${customTp}`;
         buttonCustom.innerText = `${customTp}%`;
     }
     switch (savedPercentage) {
@@ -147,6 +148,8 @@ function setBillAmount() {
 
         if (parseFloat(inputBillAmount.value) < 0) {
             const that = this as HTMLInputElement;
+            // that.parentElement.classList.add('inTheRed');
+
             that.classList.add('inTheRed');
             resetAll();
         } else {
