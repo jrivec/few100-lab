@@ -12,7 +12,6 @@ const button10 = document.getElementById('ten') as HTMLButtonElement;
 const button15 = document.getElementById('fifteen') as HTMLButtonElement;
 const button20 = document.getElementById('twenty') as HTMLButtonElement;
 const buttonCustom = document.getElementById('custom') as HTMLButtonElement;
-const buttonGroup = document.getElementsByClassName('.btn-group') as unknown as HTMLDivElement;
 
 const invalidChars = [
     '-',
@@ -144,19 +143,18 @@ function setTipPercentage() {
 }
 
 function setBillAmount() {
+    const that = this as HTMLInputElement;
     if (inputBillAmount.value.length > 0) {
-
         if (parseFloat(inputBillAmount.value) < 0) {
-            const that = this as HTMLInputElement;
-            // that.parentElement.classList.add('inTheRed');
-
             that.classList.add('inTheRed');
             resetAll();
         } else {
+            that.classList.remove('inTheRed');
             displayBillAmount.innerText = `Bill Amount: $${inputBillAmount.value} `;
             calculateAndUpdate();
         }
     } else {
+        that.classList.remove('inTheRed');
         resetAll();
     }
 }
