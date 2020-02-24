@@ -64,6 +64,7 @@ if (savedPercentage) {
         customTp = Number.parseInt(savedCustomPercentage);
         customTipAmount.value = `${customTp}`;
         buttonCustom.innerText = `${customTp}%`;
+        displayPercentagecomment.innerText = `${customTp}`;
     }
     switch (savedPercentage) {
         case '10':
@@ -150,7 +151,8 @@ function setBillAmount() {
             resetAll();
         } else {
             that.classList.remove('inTheRed');
-            displayBillAmount.innerText = `Bill Amount: $${inputBillAmount.value} `;
+            const bill = parseFloat(inputBillAmount.value);
+            displayBillAmount.innerText = `Bill Amount: $${bill.toFixed(2)} `;
             calculateAndUpdate();
         }
     } else {
